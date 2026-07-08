@@ -69,12 +69,18 @@
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 bg-navy rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                        ⚖️</div>
+                    <div class="w-10 h-10 rounded-full overflow-hidden border border-gray-200 shadow-sm flex-shrink-0">
+                        <img src="{{ asset('images/kti-logo.webp') }}" alt="KTI Logo"
+                            class="w-full h-full object-cover">
+                    </div>
+
                     <div class="hidden sm:block">
-                        <div class="font-display font-bold text-navy text-lg leading-tight">Kriminologiya</div>
-                        <div class="text-xs text-gray-400 -mt-0.5">Ilmiy Jurnal</div>
+                        <div class="font-display font-bold text-navy text-lg leading-tight">
+                            Kriminologiya
+                        </div>
+                        <div class="text-xs text-gray-400 -mt-0.5">
+                            Ilmiy Jurnal
+                        </div>
                     </div>
                 </a>
 
@@ -93,7 +99,28 @@
                         class="text-sm font-medium text-gray-700 hover:text-navy transition-colors {{ request()->routeIs('news.*') ? 'text-navy font-semibold' : '' }}">Yangiliklar</a>
                 </nav>
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-4">
+                    {{-- Language Switcher --}}
+                    <div x-data="{ langOpen: false }" class="relative hidden sm:block">
+                        <button @click="langOpen = !langOpen"
+                            class="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-navy transition-colors">
+                            <span class="uppercase">{{ app()->getLocale() }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="langOpen" @click.away="langOpen = false" x-transition x-cloak
+                            class="absolute right-0 mt-2 w-20 bg-white rounded-md shadow-lg border border-gray-100 py-1 z-50">
+                            <a href="{{ route('lang.switch', 'uz') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 {{ app()->getLocale() === 'uz' ? 'font-bold text-navy' : '' }}">UZ</a>
+                            <a href="{{ route('lang.switch', 'en') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 {{ app()->getLocale() === 'en' ? 'font-bold text-navy' : '' }}">EN</a>
+                            <a href="{{ route('lang.switch', 'ru') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 {{ app()->getLocale() === 'ru' ? 'font-bold text-navy' : '' }}">RU</a>
+                        </div>
+                    </div>
+
                     <a href="{{ route('submit.create') }}"
                         class="hidden md:inline-flex items-center gap-1 bg-gold hover:bg-gold-light text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
                         📝 Maqola yuborish

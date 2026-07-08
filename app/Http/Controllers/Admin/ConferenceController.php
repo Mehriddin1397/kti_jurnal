@@ -42,6 +42,7 @@ class ConferenceController extends Controller
             'registration_deadline' => 'nullable|date',
             'topics' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:20480',
             'status' => 'nullable|string',
             'proceedings_journal_id' => 'nullable|exists:journals,id',
         ]);
@@ -52,6 +53,10 @@ class ConferenceController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $validated['cover_image'] = $request->file('cover_image')->store('conferences', 'public');
+        }
+
+        if ($request->hasFile('pdf_file')) {
+            $validated['pdf_file'] = $request->file('pdf_file')->store('conferences/archives', 'public');
         }
 
         $validated['is_online'] = $request->boolean('is_online');
@@ -81,6 +86,7 @@ class ConferenceController extends Controller
             'registration_deadline' => 'nullable|date',
             'topics' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:20480',
             'status' => 'nullable|string',
             'proceedings_journal_id' => 'nullable|exists:journals,id',
         ]);
@@ -89,6 +95,12 @@ class ConferenceController extends Controller
             if ($conference->cover_image)
                 Storage::disk('public')->delete($conference->cover_image);
             $validated['cover_image'] = $request->file('cover_image')->store('conferences', 'public');
+        }
+
+        if ($request->hasFile('pdf_file')) {
+            if ($conference->pdf_file)
+                Storage::disk('public')->delete($conference->pdf_file);
+            $validated['pdf_file'] = $request->file('pdf_file')->store('conferences/archives', 'public');
         }
 
         $validated['is_online'] = $request->boolean('is_online');
@@ -100,6 +112,9 @@ class ConferenceController extends Controller
     {
         if ($conference->cover_image)
             Storage::disk('public')->delete($conference->cover_image);
+        if ($conference->pdf_file)
+            Storage::disk('public')->delete($conference->pdf_file);
+
         $conference->delete();
         return redirect()->route('admin.conferences.index')->with('success', 'Konferensiya o\'chirildi.');
     }

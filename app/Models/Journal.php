@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Journal extends Model
 {
+    use \App\Traits\Translatable;
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -33,11 +35,11 @@ class Journal extends Model
 
     public function getNameAttribute(): string
     {
-        return $this->name_uz ?: $this->name_en ?: $this->name_ru ?? '';
+        return $this->getTranslated('name');
     }
 
     public function getDescriptionAttribute(): string
     {
-        return $this->description_uz ?: $this->description_en ?: $this->description_ru ?? '';
+        return $this->getTranslated('description');
     }
 }

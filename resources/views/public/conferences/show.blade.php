@@ -1,5 +1,5 @@
 @extends('public.layouts.app')
-@section('title', ($conference->title_uz ?: $conference->title_en) . ' — Konferensiya')
+@section('title', $conference->title . ' — Konferensiya')
 @section('content')
     <div class="max-w-5xl mx-auto px-4 py-12">
         <a href="{{ route('conferences.index') }}" class="text-sm text-gray-500 hover:text-navy mb-4 inline-block">←
@@ -11,9 +11,9 @@
                 @if($conference->is_online)<span
                 class="px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700">Online</span>@endif
             </div>
-            <h1 class="font-display text-3xl font-bold text-navy-dark mb-2">{{ $conference->title_uz }}</h1>
-            @if($conference->title_en)
-            <p class="text-gray-500 italic mb-4">{{ $conference->title_en }}</p>@endif
+            <h1 class="font-display text-3xl font-bold text-navy-dark mb-2">{{ $conference->title }}</h1>
+            @if($conference->title)
+            <p class="text-gray-500 italic mb-4">{{ $conference->title }}</p>@endif
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 mb-6">
                 <div>📅 <strong>Boshlanishi:</strong><br>{{ $conference->start_date?->format('d.m.Y') }}</div>
                 <div>📅 <strong>Tugashi:</strong><br>{{ $conference->end_date?->format('d.m.Y') }}</div>
@@ -23,9 +23,9 @@
                 @if($conference->venue)
                 <div>📍 <strong>Joy:</strong><br>{{ $conference->venue }}</div>@endif
             </div>
-            @if($conference->description_uz)
+            @if($conference->description)
                 <h3 class="font-semibold text-navy-dark mb-2">Tavsif</h3>
-                <p class="text-gray-700 leading-relaxed mb-4">{{ $conference->description_uz }}</p>
+                <p class="text-gray-700 leading-relaxed mb-4">{{ $conference->description }}</p>
             @endif
             @if($conference->topics)
                 <h3 class="font-semibold text-navy-dark mb-2">Mavzular</h3>
@@ -33,6 +33,15 @@
                     @foreach(explode(',', $conference->topics) as $topic)
                         <span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">{{ trim($topic) }}</span>
                     @endforeach
+                </div>
+            @endif
+            @if($conference->pdf_file)
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <h3 class="font-semibold text-navy-dark mb-4">Konferensiya to'plami (Arxiv)</h3>
+                    <a href="{{ $conference->pdf_url }}" target="_blank"
+                        class="inline-flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium px-4 py-2 rounded-lg transition-colors">
+                        📄 To'plamni yuklab olish (PDF)
+                    </a>
                 </div>
             @endif
         </div>

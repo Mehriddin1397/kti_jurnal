@@ -5,6 +5,13 @@ use Illuminate\Support\Facades\Route;
 // ═══════════════════════════════════════
 // PUBLIC ROUTES
 // ═══════════════════════════════════════
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['uz', 'en', 'ru'])) {
+        session()->put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
 Route::get('/', [App\Http\Controllers\Public\HomeController::class, 'index'])->name('home');
 
 Route::prefix('journals')->name('journals.')->group(function () {

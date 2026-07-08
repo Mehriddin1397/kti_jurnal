@@ -1,11 +1,11 @@
 @extends('public.layouts.app')
-@section('title', ($journal->name_uz ?: $journal->name_en) . ' — Kriminologiya')
+@section('title', (name) . ' — Kriminologiya')
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-12">
     {{-- Header --}}
     <div class="bg-white rounded-xl border p-8 mb-8">
-        <h1 class="font-display text-3xl font-bold text-navy-dark mb-2">{{ $journal->name_uz }}</h1>
-        @if($journal->name_en)<p class="text-gray-500">{{ $journal->name_en }}</p>@endif
+        <h1 class="font-display text-3xl font-bold text-navy-dark mb-2">{{ $journal->name }}</h1>
+        @if($journal->name)<p class="text-gray-500">{{ $journal->name }}</p>@endif
         <div class="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
             @if($journal->issn_print)<span>Print ISSN: <strong>{{ $journal->issn_print }}</strong></span>@endif
             @if($journal->issn_online)<span>Online ISSN: <strong>{{ $journal->issn_online }}</strong></span>@endif
@@ -94,7 +94,7 @@
                 @endforeach
                 @foreach($articles as $article)
                 <div class="py-3 border-b border-gray-100">
-                    <a href="{{ route('articles.show', $article->slug) }}" class="text-navy hover:text-gold font-medium text-sm">{{ $article->title_uz ?: $article->title_en }}</a>
+                    <a href="{{ route('articles.show', $article->slug) }}" class="text-navy hover:text-gold font-medium text-sm">{{ title }}</a>
                     <p class="text-xs text-gray-500 mt-1">{{ $article->authors_string }} · {{ $article->published_at?->format('Y') }}</p>
                 </div>
                 @endforeach

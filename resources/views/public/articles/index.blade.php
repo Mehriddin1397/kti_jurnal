@@ -12,7 +12,7 @@
                 <select name="journal_id" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
                     <option value="">Barcha jurnallar</option>
                     @foreach($journals as $j)
-                        <option value="{{ $j->id }}" {{ request('journal_id') == $j->id ? 'selected' : '' }}>{{ $j->name_uz }}
+                        <option value="{{ $j->id }}" {{ request('journal_id') == $j->id ? 'selected' : '' }}>{{ $j->name }}
                         </option>
                     @endforeach
                 </select>
@@ -40,19 +40,19 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
                                 <span
-                                    class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">{{ $article->journal->name_uz ?? '' }}</span>
+                                    class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">{{ $article->journal->name ?? '' }}</span>
                                 <span class="text-xs text-gray-400">Tom {{ $article->volume }}, Son {{ $article->issue }}</span>
                                 <span class="text-xs text-gray-400">{{ $article->published_at?->format('Y') }}</span>
                             </div>
                             <h2 class="text-lg font-semibold text-navy-dark mb-1">
                                 <a href="{{ route('articles.show', $article->slug) }}"
                                     class="hover:text-gold transition-colors">
-                                    {{ $article->title_uz ?: $article->title_en }}
+                                    {{ title }}
                                 </a>
                             </h2>
                             <p class="text-sm text-gray-500 mb-2">{{ $article->authors_string }}</p>
                             <p class="text-sm text-gray-600 line-clamp-3 mb-3">
-                                {{ Str::limit($article->abstract_uz ?: $article->abstract_en, 250) }}</p>
+                                {{ Str::limit(abstract, 250) }}</p>
                             <div class="flex flex-wrap items-center gap-3">
                                 @if($article->doi)<span class="text-xs text-gray-500">DOI: {{ $article->doi }}</span>@endif
                                 @if($article->pdf_file)

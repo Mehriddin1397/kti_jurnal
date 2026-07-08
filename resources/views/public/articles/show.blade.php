@@ -1,14 +1,14 @@
 @extends('public.layouts.app')
-@section('title', ($article->title_en ?: $article->title_uz) . ' — Kriminologiya')
+@section('title', $article->title . ' — Kriminologiya')
 
 @section('meta')
     {{-- Highwire Press format — Google Scholar --}}
-    <meta name="citation_title" content="{{ $article->title_en ?: $article->title_uz }}">
+    <meta name="citation_title" content="{{ $article->title }}">
     @foreach($article->authors as $author)
         <meta name="citation_author" content="{{ $author->last_name }}, {{ $author->first_name }}">
         <meta name="citation_author_institution" content="{{ $author->pivot->organization ?: $author->organization }}">
     @endforeach
-    <meta name="citation_journal_title" content="{{ $article->journal->name_en ?: $article->journal->name_uz }}">
+    <meta name="citation_journal_title" content="{{ $article->journal->name }}">
     <meta name="citation_volume" content="{{ $article->volume }}">
     <meta name="citation_issue" content="{{ $article->issue }}">
     <meta name="citation_firstpage" content="{{ $article->page_from }}">
@@ -21,7 +21,7 @@
         <meta name="citation_pdf_url" content="{{ $article->pdf_url }}">
     @endif
     <meta name="citation_abstract_html_url" content="{{ url()->current() }}">
-    <meta name="citation_keywords" content="{{ $article->keywords_en ?: $article->keywords_uz }}">
+    <meta name="citation_keywords" content="{{ $article->keywords }}">
     @if($article->is_open_access)
         <meta name="citation_fulltext_world_accessible" content="">
     @endif
@@ -35,17 +35,14 @@
                 {{-- Breadcrumb --}}
                 <div class="text-sm text-gray-500 mb-4">
                     <a href="{{ route('journals.show', $article->journal->slug) }}"
-                        class="hover:text-navy">{{ $article->journal->name_uz }}</a>
+                        class="hover:text-navy">{{ $article->journal->name }}</a>
                     → Tom {{ $article->volume }}, Son {{ $article->issue }}
                 </div>
 
                 {{-- Title --}}
                 <h1 class="font-display text-2xl md:text-3xl font-bold text-navy-dark leading-tight mb-4">
-                    {{ $article->title_uz ?: $article->title_en }}
+                    {{ $article->title }}
                 </h1>
-                @if($article->title_en && $article->title_uz)
-                    <p class="text-gray-500 italic mb-4">{{ $article->title_en }}</p>
-                @endif
 
                 {{-- Authors --}}
                 <div class="flex flex-wrap gap-2 mb-4">
@@ -72,20 +69,16 @@
 
                 {{-- Abstract --}}
                 <div class="bg-white rounded-xl border p-6 mb-6">
-                    <h2 class="font-semibold text-navy-dark mb-3">Annotatsiya</h2>
-                    <p class="text-gray-700 leading-relaxed">{{ $article->abstract_uz ?: $article->abstract_en }}</p>
-                    @if($article->abstract_en && $article->abstract_uz)
-                        <h3 class="font-semibold text-navy-dark mt-4 mb-2">Abstract</h3>
-                        <p class="text-gray-600 leading-relaxed italic">{{ $article->abstract_en }}</p>
-                    @endif
+                    <h2 class="font-semibold text-navy-dark mb-3">Annotatsiya / Abstract</h2>
+                    <p class="text-gray-700 leading-relaxed">{{ $article->abstract }}</p>
                 </div>
 
                 {{-- Keywords --}}
-                @if($article->keywords_uz || $article->keywords_en)
+                @if($article->keywords)
                     <div class="bg-white rounded-xl border p-6 mb-6">
-                        <h2 class="font-semibold text-navy-dark mb-3">Kalit so'zlar</h2>
+                        <h2 class="font-semibold text-navy-dark mb-3">Kalit so'zlar / Keywords</h2>
                         <div class="flex flex-wrap gap-2">
-                            @foreach(explode(',', $article->keywords_uz ?: $article->keywords_en) as $kw)
+                            @foreach(explode(',', $article->keywords) as $kw)
                                 <span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">{{ trim($kw) }}</span>
                             @endforeach
                         </div>
@@ -125,16 +118,17 @@
                             <p class="text-xs font-semibold text-gray-500 mb-1">APA</p>
                             <div class="bg-gray-50 text-xs p-3 rounded font-mono">{{ $article->authors_string }}
                                 ({{ $article->published_at?->format('Y') }}).
-                                {{ $article->title_en ?: $article->title_uz }}.
-                                <em>{{ $article->journal->name_en ?: $article->journal->name_uz }}</em>,
+                                {{ $article->title }}.
+                                <em>{{ $article->journal->name }}</em>,
                                 {{ $article->volume }}({{ $article->issue }}),
-                                {{ $article->page_from }}–{{ $article->page_to }}. https://doi.org/{{ $article->doi }}</div>
+                                {{ $article->page_from }}–{{ $article->page_to }}. https://doi.org/{{ $article->doi }}
+                            </div>
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-gray-500 mb-1">Vancouver</p>
                             <div class="bg-gray-50 text-xs p-3 rounded font-mono">{{ $article->authors_string }}.
-                                {{ $article->title_en ?: $article->title_uz }}.
-                                {{ $article->journal->name_en ?: $article->journal->name_uz }}.
+                                {{ $article->title }}.
+                                {{ $article->journal->name }}.
                                 {{ $article->published_at?->format('Y') }};{{ $article->volume }}({{ $article->issue }}):{{ $article->page_from }}-{{ $article->page_to }}.
                             </div>
                         </div>
@@ -167,7 +161,7 @@
                         @foreach($relatedArticles as $rel)
                             <div class="py-2 {{ !$loop->last ? 'border-b' : '' }}">
                                 <a href="{{ route('articles.show', $rel->slug) }}"
-                                    class="text-sm text-navy hover:text-gold">{{ Str::limit($rel->title_uz ?: $rel->title_en, 60) }}</a>
+                                    class="text-sm text-navy hover:text-gold">{{ Str::limit($rel->title, 60) }}</a>
                                 <p class="text-xs text-gray-400">{{ $rel->published_at?->format('Y') }}</p>
                             </div>
                         @endforeach

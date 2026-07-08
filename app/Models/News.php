@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
+    use \App\Traits\Translatable;
+
     protected $guarded = ['id'];
     protected $table = 'news';
 
@@ -16,7 +18,12 @@ class News extends Model
 
     public function getTitleAttribute(): string
     {
-        return $this->title_uz ?: $this->title_en ?? '';
+        return $this->getTranslated('title');
+    }
+
+    public function getBodyAttribute(): string
+    {
+        return $this->getTranslated('body');
     }
 
     public function scopePublished($query)

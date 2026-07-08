@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Conference extends Model
 {
+    use \App\Traits\Translatable;
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -16,9 +19,16 @@ class Conference extends Model
         'is_online' => 'boolean',
     ];
 
+    public function getPdfUrlAttribute(): string
+    {
+        return $this->pdf_file
+            ? Storage::disk('public')->url($this->pdf_file)
+            : '';
+    }
+
     public function getTitleAttribute(): string
     {
-        return $this->title_uz ?: $this->title_en ?? '';
+        return $this->getTranslated('title');
     }
 
     public function getStatusColorAttribute(): string

@@ -31,7 +31,7 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-navy outline-none">
                             <option value="">Tanlang</option>
                             @foreach($journals as $j)
-                                <option value="{{ $j->id }}" {{ old('journal_id') == $j->id ? 'selected' : '' }}>{{ $j->name_uz }}
+                                <option value="{{ $j->id }}" {{ old('journal_id') == $j->id ? 'selected' : '' }}>{{ $j->name }}
                                 </option>
                             @endforeach
                         </select>

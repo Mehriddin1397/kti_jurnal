@@ -73,6 +73,12 @@
                 <div><label class="block text-sm font-medium text-gray-600 mb-1">Muqova rasmi</label>
                     <input type="file" name="cover_image" class="w-full text-sm">
                 </div>
+                <div><label class="block text-sm font-medium text-gray-600 mb-1">To'plam (PDF arxivi)</label>
+                    <input type="file" name="pdf_file" accept=".pdf" class="w-full text-sm">
+                    @if($conference->pdf_file)
+                        <p class="text-xs text-navy mt-1"><a href="{{ $conference->pdf_url }}" target="_blank">Mavjud faylni ko'rish</a></p>
+                    @endif
+                </div>
             </div>
             <button type="submit"
                 class="bg-navy hover:bg-navy-dark text-white font-medium px-6 py-2.5 rounded-lg">{{ $conference->exists ? 'Yangilash' : 'Saqlash' }}</button>

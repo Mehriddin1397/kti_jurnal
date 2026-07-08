@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AboutPage extends Model
 {
+    use \App\Traits\Translatable;
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -14,12 +16,17 @@ class AboutPage extends Model
 
     public function getTitleAttribute(): string
     {
-        return $this->title_uz ?: $this->title_en ?: $this->title_ru ?? '';
+        return $this->getTranslated('title');
     }
 
     public function getDescriptionAttribute(): string
     {
-        return $this->description_uz ?: $this->description_en ?: $this->description_ru ?? '';
+        return $this->getTranslated('description');
+    }
+
+    public function getBodyAttribute(): string
+    {
+        return $this->getTranslated('body');
     }
 
     public function scopeActive($query)

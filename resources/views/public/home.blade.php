@@ -64,17 +64,17 @@
                 <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
                     <div class="flex items-center gap-2 mb-3">
                         <span
-                            class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">{{ $article->journal->name_uz ?? '' }}</span>
+                            class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">{{ $article->journal->name ?? '' }}</span>
                         <span class="text-xs text-gray-400">{{ $article->published_at?->format('Y') }}</span>
                     </div>
                     <h3 class="font-semibold text-navy-dark text-sm leading-snug mb-2">
                         <a href="{{ route('articles.show', $article->slug) }}" class="hover:text-gold transition-colors">
-                            {{ $article->title_uz ?: $article->title_en }}
+                            {{ $article->title }}
                         </a>
                     </h3>
                     <p class="text-xs text-gray-500 mb-2">{{ $article->authors_string }}</p>
                     <p class="text-xs text-gray-600 leading-relaxed line-clamp-3 mb-3">
-                        {{ Str::limit($article->abstract_uz ?: $article->abstract_en, 150) }}
+                        {{ Str::limit($article->abstract, 150) }}
                     </p>
                     <div class="flex items-center gap-3">
                         @if($article->pdf_file)
@@ -100,7 +100,7 @@
                     @foreach($conferences as $conf)
                         <div class="bg-navy rounded-xl p-6 border border-navy-light hover:border-gold transition-colors">
                             <div class="text-xs text-gold-light mb-2">{{ $conf->start_date?->format('d.m.Y') }}</div>
-                            <h3 class="font-semibold text-lg mb-2">{{ $conf->title_uz }}</h3>
+                            <h3 class="font-semibold text-lg mb-2">{{ $conf->title }}</h3>
                             <p class="text-sm text-blue-200 mb-4">📍 {{ $conf->venue ?? ($conf->is_online ? 'Online' : '') }}</p>
                             <a href="{{ route('conferences.show', $conf->slug) }}"
                                 class="text-sm text-gold hover:text-gold-light">Batafsil →</a>
@@ -121,9 +121,7 @@
                         class="w-16 h-20 bg-navy-dark rounded-lg flex items-center justify-center text-white text-2xl flex-shrink-0">
                         📰</div>
                     <div class="flex-1">
-                        <h3 class="font-semibold text-navy-dark mb-1">{{ $journal->name_uz }}</h3>
-                        @if($journal->name_en)
-                        <p class="text-xs text-gray-400 mb-2">{{ $journal->name_en }}</p>@endif
+                        <h3 class="font-semibold text-navy-dark mb-1">{{ $journal->name }}</h3>
                         <div class="flex flex-wrap gap-2 mb-2">
                             @if($journal->issn_online)<span class="text-xs text-gray-500">ISSN:
                             {{ $journal->issn_online }}</span>@endif
@@ -159,7 +157,7 @@
                             <div class="text-xs text-gray-400 mb-2">{{ $item->published_at?->format('d.m.Y') }}</div>
                             <h3 class="font-semibold text-navy-dark mb-2">
                                 <a href="{{ route('news.show', $item->slug) }}"
-                                    class="hover:text-gold transition-colors">{{ $item->title_uz }}</a>
+                                    class="hover:text-gold transition-colors">{{ $item->title }}</a>
                             </h3>
                             <p class="text-sm text-gray-600 line-clamp-3">{{ $item->excerpt }}</p>
                         </div>

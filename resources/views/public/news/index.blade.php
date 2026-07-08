@@ -8,7 +8,7 @@
                 <div class="bg-white rounded-xl border p-5 hover:shadow-md transition-shadow">
                     <div class="text-xs text-gray-400 mb-2">{{ $item->published_at?->format('d.m.Y') }}</div>
                     <h2 class="font-semibold text-navy-dark mb-2"><a href="{{ route('news.show', $item->slug) }}"
-                            class="hover:text-gold transition-colors">{{ $item->title_uz }}</a></h2>
+                            class="hover:text-gold transition-colors">{{ $item->title }}</a></h2>
                     <p class="text-sm text-gray-600 line-clamp-3">{{ $item->excerpt }}</p>
                     <a href="{{ route('news.show', $item->slug) }}"
                         class="text-sm text-gold font-medium mt-3 inline-block hover:text-gold-light">O'qish →</a>

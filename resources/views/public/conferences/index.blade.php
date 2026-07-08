@@ -15,13 +15,18 @@
                 <div class="bg-white rounded-xl border p-6 hover:shadow-md transition-shadow">
                     <div class="text-xs text-gold font-medium mb-2">{{ $conf->start_date?->format('d.m.Y') }} —
                         {{ $conf->end_date?->format('d.m.Y') }}</div>
-                    <h3 class="font-semibold text-navy-dark text-lg mb-2">{{ $conf->title_uz }}</h3>
+                    <h3 class="font-semibold text-navy-dark text-lg mb-2">{{ $conf->title }}</h3>
                     <p class="text-sm text-gray-600 mb-3">📍 {{ $conf->venue ?? ($conf->is_online ? 'Online' : '') }}</p>
                     @if($conf->submission_deadline)
                         <p class="text-xs text-gray-500">📝 Maqola muddati: {{ $conf->submission_deadline->format('d.m.Y') }}</p>
                     @endif
-                    <a href="{{ route('conferences.show', $conf->slug) }}"
-                        class="inline-block mt-3 text-sm text-gold font-medium hover:text-gold-light">Batafsil →</a>
+                    <div class="flex items-center gap-3 mt-3">
+                        <a href="{{ route('conferences.show', $conf->slug) }}"
+                            class="text-sm text-gold font-medium hover:text-gold-light">Batafsil →</a>
+                        @if($conf->pdf_file)
+                            <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded">📄 PDF Arxiv</span>
+                        @endif
+                    </div>
                 </div>
             @empty
                 <p class="text-gray-400 col-span-3">Hozirda aktiv konferensiyalar yo'q</p>
@@ -31,9 +36,14 @@
             @forelse($past as $conf)
                 <div class="bg-white rounded-xl border p-6 opacity-75">
                     <div class="text-xs text-gray-400 mb-2">{{ $conf->start_date?->format('d.m.Y') }}</div>
-                    <h3 class="font-semibold text-gray-700 mb-2">{{ $conf->title_uz }}</h3>
-                    <a href="{{ route('conferences.show', $conf->slug) }}" class="text-sm text-navy hover:text-gold">Ko'rish
-                        →</a>
+                    <h3 class="font-semibold text-gray-700 mb-2">{{ $conf->title }}</h3>
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('conferences.show', $conf->slug) }}" class="text-sm text-navy hover:text-gold">Ko'rish
+                            →</a>
+                        @if($conf->pdf_file)
+                            <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded">📄 PDF</span>
+                        @endif
+                    </div>
                 </div>
             @empty
                 <p class="text-gray-400 col-span-3">O'tgan konferensiyalar yo'q</p>

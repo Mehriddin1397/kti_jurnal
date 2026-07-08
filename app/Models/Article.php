@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
+    use \App\Traits\Translatable;
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -51,12 +53,12 @@ class Article extends Model
 
     public function getTitleAttribute(): string
     {
-        return $this->title_uz ?: $this->title_en ?: $this->title_ru ?? '';
+        return $this->getTranslated('title');
     }
 
     public function getAbstractAttribute(): string
     {
-        return $this->abstract_uz ?: $this->abstract_en ?: $this->abstract_ru ?? '';
+        return $this->getTranslated('abstract');
     }
 
     public function getMetaTitleAttribute(): string
