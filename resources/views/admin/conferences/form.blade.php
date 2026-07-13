@@ -73,7 +73,7 @@
                 <div><label class="block text-sm font-medium text-gray-600 mb-1">Muqova rasmi</label>
                     <input type="file" name="cover_image" class="w-full text-sm">
                 </div>
-                <div><label class="block text-sm font-medium text-gray-600 mb-1">To'plam (PDF arxivi)</label>
+                <div><label class="block text-sm font-medium text-gray-600 mb-1">To'plam (PDF arxivi, max 30MB)</label>
                     <input type="file" name="pdf_file" accept=".pdf" class="w-full text-sm">
                     @if($conference->pdf_file)
                         <p class="text-xs text-navy mt-1"><a href="{{ $conference->pdf_url }}" target="_blank">Mavjud faylni ko'rish</a></p>

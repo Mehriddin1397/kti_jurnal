@@ -58,4 +58,17 @@ class ArticleController extends Controller
 
         return Storage::disk('public')->download($article->pdf_file);
     }
+
+    public function viewPdf($slug)
+    {
+        $article = Article::where('slug', $slug)->firstOrFail();
+
+        if (!$article->pdf_file) {
+            abort(404);
+        }
+
+        $article->increment('view_count');
+
+        return Storage::disk('public')->response($article->pdf_file);
+    }
 }

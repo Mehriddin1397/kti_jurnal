@@ -56,7 +56,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-600 mb-1">PDF fayl *</label>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">PDF fayl * (max 30MB)</label>
                         <input type="file" name="pdf_file" accept=".pdf" required class="w-full text-sm">
                         @error('pdf_file')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>

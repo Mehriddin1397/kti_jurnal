@@ -168,7 +168,7 @@
             <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
                 <h3 class="font-semibold text-gray-700 border-b pb-2">Fayllar va matn</h3>
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">PDF fayl (max 5MB)</label>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">PDF fayl (max 30MB)</label>
                     <input type="file" name="pdf_file" accept=".pdf" class="w-full text-sm">
                 </div>
                 <div>

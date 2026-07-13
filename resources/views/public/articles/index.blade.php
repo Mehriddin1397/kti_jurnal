@@ -47,15 +47,18 @@
                             <h2 class="text-lg font-semibold text-navy-dark mb-1">
                                 <a href="{{ route('articles.show', $article->slug) }}"
                                     class="hover:text-gold transition-colors">
-                                    {{ title }}
+                                    {{ $article->title }}
                                 </a>
                             </h2>
                             <p class="text-sm text-gray-500 mb-2">{{ $article->authors_string }}</p>
                             <p class="text-sm text-gray-600 line-clamp-3 mb-3">
-                                {{ Str::limit(abstract, 250) }}</p>
+                                {{ Str::limit($article->abstract, 250) }}</p>
                             <div class="flex flex-wrap items-center gap-3">
                                 @if($article->doi)<span class="text-xs text-gray-500">DOI: {{ $article->doi }}</span>@endif
                                 @if($article->pdf_file)
+                                    <a href="{{ route('articles.pdf.view', $article->slug) }}" target="_blank"
+                                        class="text-xs border border-navy text-navy px-2 py-1 rounded hover:bg-navy hover:text-white transition-colors">🔍
+                                        Ko'rish</a>
                                     <a href="{{ route('articles.pdf', $article->slug) }}"
                                         class="text-xs border border-gold text-gold px-2 py-1 rounded hover:bg-gold hover:text-white transition-colors">📥
                                         PDF</a>

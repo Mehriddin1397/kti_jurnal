@@ -42,7 +42,7 @@ class ConferenceController extends Controller
             'registration_deadline' => 'nullable|date',
             'topics' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:20480',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:30720',
             'status' => 'nullable|string',
             'proceedings_journal_id' => 'nullable|exists:journals,id',
         ]);
@@ -86,7 +86,7 @@ class ConferenceController extends Controller
             'registration_deadline' => 'nullable|date',
             'topics' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:20480',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:30720',
             'status' => 'nullable|string',
             'proceedings_journal_id' => 'nullable|exists:journals,id',
         ]);

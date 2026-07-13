@@ -23,6 +23,7 @@ Route::prefix('articles')->name('articles.')->group(function () {
     Route::get('/', [App\Http\Controllers\Public\ArticleController::class, 'index'])->name('index');
     Route::get('/{slug}', [App\Http\Controllers\Public\ArticleController::class, 'show'])->name('show');
     Route::get('/{slug}/pdf', [App\Http\Controllers\Public\ArticleController::class, 'downloadPdf'])->name('pdf');
+    Route::get('/{slug}/pdf/view', [App\Http\Controllers\Public\ArticleController::class, 'viewPdf'])->name('pdf.view');
 });
 
 Route::get('/authors/{id}', [App\Http\Controllers\Public\AuthorController::class, 'show'])->name('authors.show');

@@ -109,6 +109,9 @@
                         class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg">📋 Iqtibos
                         keltirish</button>
                     @if($article->pdf_file)
+                        <a href="{{ route('articles.pdf.view', $article->slug) }}" target="_blank"
+                            class="ml-2 bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg inline-block">🔍
+                            Onlayn ko'rish</a>
                         <a href="{{ route('articles.pdf', $article->slug) }}"
                             class="ml-2 bg-gold hover:bg-gold-light text-white text-sm font-medium px-4 py-2 rounded-lg inline-block">📥
                             PDF yuklab olish</a>
