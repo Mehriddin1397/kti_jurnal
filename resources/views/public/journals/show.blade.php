@@ -1,5 +1,5 @@
 @extends('public.layouts.app')
-@section('title', (name) . ' — Kriminologiya')
+@section('title', $journal->name . ' — Kriminologiya')
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-12">
     {{-- Header --}}
@@ -94,7 +94,7 @@
                 @endforeach
                 @foreach($articles as $article)
                 <div class="py-3 border-b border-gray-100">
-                    <a href="{{ route('articles.show', $article->slug) }}" class="text-navy hover:text-gold font-medium text-sm">{{ title }}</a>
+                    <a href="{{ route('articles.show', $article->slug) }}" class="text-navy hover:text-gold font-medium text-sm">{{ $article->title }}</a>
                     <p class="text-xs text-gray-500 mt-1">{{ $article->authors_string }} · {{ $article->published_at?->format('Y') }}</p>
                 </div>
                 @endforeach

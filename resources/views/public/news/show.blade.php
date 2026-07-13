@@ -1,5 +1,5 @@
 @extends('public.layouts.app')
-@section('title', (title) . ' — Yangiliklar')
+@section('title', $newsItem->title . ' — Yangiliklar')
 @section('content')
     <div class="max-w-3xl mx-auto px-4 py-12">
         <a href="{{ route('news.index') }}" class="text-sm text-gray-500 hover:text-navy mb-4 inline-block">←
