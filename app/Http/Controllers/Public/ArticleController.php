@@ -21,9 +21,12 @@ class ArticleController extends Controller
         $journals = Journal::where('status', 'active')->get();
 
         $years = Article::published()
-            ->selectRaw('DISTINCT strftime("%Y", published_at) as year')
-            ->orderByDesc('year')
-            ->pluck('year');
+            ->whereNotNull('published_at')
+            ->pluck('published_at')
+            ->map(fn($date) => $date->format('Y'))
+            ->unique()
+            ->sortDesc()
+            ->values();
 
         return view('public.articles.index', compact('articles', 'journals', 'years'));
     }
