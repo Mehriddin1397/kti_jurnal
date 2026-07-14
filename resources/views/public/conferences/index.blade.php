@@ -24,7 +24,8 @@
                         <a href="{{ route('conferences.show', $conf->slug) }}"
                             class="text-sm text-gold font-medium hover:text-gold-light">{{ __('site.conferences.details') }} →</a>
                         @if($conf->pdf_file)
-                            <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded">📄 {{ __('site.conferences.pdf_archive') }}</span>
+                            <a href="{{ $conf->pdf_url }}" target="_blank"
+                                class="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-2 py-0.5 rounded transition-colors">📄 {{ __('site.conferences.pdf_archive') }}</a>
                         @endif
                     </div>
                 </div>
@@ -41,7 +42,8 @@
                         <a href="{{ route('conferences.show', $conf->slug) }}" class="text-sm text-navy hover:text-gold">{{ __('site.conferences.view') }}
                             →</a>
                         @if($conf->pdf_file)
-                            <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded">📄 {{ __('site.conferences.pdf') }}</span>
+                            <a href="{{ $conf->pdf_url }}" target="_blank"
+                                class="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-2 py-0.5 rounded transition-colors">📄 {{ __('site.conferences.pdf') }}</a>
                         @endif
                     </div>
                 </div>
