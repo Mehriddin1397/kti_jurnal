@@ -35,7 +35,9 @@
             :class="sidebarOpen ? '' : '-translate-x-full'" style="transition: transform 0.3s ease">
             <div class="p-5 border-b border-navy">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gold rounded-lg flex items-center justify-center text-sm font-bold">⚖️</div>
+                    <div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+                        <img src="{{ asset('images/kti-logo.webp') }}" alt="KTI Logo" class="w-full h-full object-cover">
+                    </div>
                     <span class="font-bold text-lg">Admin</span>
                 </a>
             </div>

@@ -1,9 +1,9 @@
 @extends('public.layouts.app')
-@section('title', $newsItem->title . ' — Yangiliklar')
+@section('title', $newsItem->title . ' — ' . __('site.news.title'))
 @section('content')
     <div class="max-w-3xl mx-auto px-4 py-12">
         <a href="{{ route('news.index') }}" class="text-sm text-gray-500 hover:text-navy mb-4 inline-block">←
-            Yangiliklar</a>
+            {{ __('site.news_show.back') }}</a>
         <article class="bg-white rounded-xl border p-8">
             <div class="text-xs text-gray-400 mb-2">{{ $newsItem->published_at?->format('d.m.Y') }}</div>
             <h1 class="font-display text-2xl md:text-3xl font-bold text-navy-dark mb-4">{{ $newsItem->title }}</h1>

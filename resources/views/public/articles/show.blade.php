@@ -1,5 +1,5 @@
 @extends('public.layouts.app')
-@section('title', $article->title . ' — Kriminologiya')
+@section('title', $article->title . ' — ' . __('site.footer.brand'))
 
 @section('meta')
     {{-- Highwire Press format — Google Scholar --}}
@@ -36,7 +36,7 @@
                 <div class="text-sm text-gray-500 mb-4">
                     <a href="{{ route('journals.show', $article->journal->slug) }}"
                         class="hover:text-navy">{{ $article->journal->name }}</a>
-                    → Tom {{ $article->volume }}, Son {{ $article->issue }}
+                    → {{ __('site.journal.volume') }} {{ $article->volume }}, {{ __('site.journal.issue') }} {{ $article->issue }}
                 </div>
 
                 {{-- Title --}}
@@ -61,22 +61,21 @@
                     <span class="bg-gray-100 px-2 py-1 rounded">{{ $article->published_at?->format('d.m.Y') }}</span>
                     <span class="bg-gray-100 px-2 py-1 rounded">{{ ucfirst($article->article_type) }}</span>
                     <span class="bg-gray-100 px-2 py-1 rounded">{{ strtoupper($article->language) }}</span>
-                    @if($article->is_open_access)<span class="bg-green-50 text-green-700 px-2 py-1 rounded">🔓 Open
-                    Access</span>@endif
+                    @if($article->is_open_access)<span class="bg-green-50 text-green-700 px-2 py-1 rounded">🔓 {{ __('site.article.open_access') }}</span>@endif
                     <span class="bg-gray-100 px-2 py-1 rounded">👁 {{ $article->view_count }} · 📥
                         {{ $article->download_count }}</span>
                 </div>
 
                 {{-- Abstract --}}
                 <div class="bg-white rounded-xl border p-6 mb-6">
-                    <h2 class="font-semibold text-navy-dark mb-3">Annotatsiya / Abstract</h2>
+                    <h2 class="font-semibold text-navy-dark mb-3">{{ __('site.article.abstract_heading') }}</h2>
                     <p class="text-gray-700 leading-relaxed">{{ $article->abstract }}</p>
                 </div>
 
                 {{-- Keywords --}}
                 @if($article->keywords)
                     <div class="bg-white rounded-xl border p-6 mb-6">
-                        <h2 class="font-semibold text-navy-dark mb-3">Kalit so'zlar / Keywords</h2>
+                        <h2 class="font-semibold text-navy-dark mb-3">{{ __('site.article.keywords_heading') }}</h2>
                         <div class="flex flex-wrap gap-2">
                             @foreach(explode(',', $article->keywords) as $kw)
                                 <span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">{{ trim($kw) }}</span>
@@ -88,7 +87,7 @@
                 {{-- Full Text --}}
                 @if($article->full_text_html)
                     <div class="bg-white rounded-xl border p-6 mb-6 prose max-w-none">
-                        <h2 class="font-semibold text-navy-dark mb-3">To'liq matn</h2>
+                        <h2 class="font-semibold text-navy-dark mb-3">{{ __('site.article.full_text_heading') }}</h2>
                         {!! $article->full_text_html !!}
                     </div>
                 @endif
@@ -106,15 +105,14 @@
                 {{-- Cite Modal --}}
                 <div class="bg-white rounded-xl border p-6" x-data="{ showCite: false }">
                     <button @click="showCite = !showCite"
-                        class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg">📋 Iqtibos
-                        keltirish</button>
+                        class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg">📋 {{ __('site.article.cite') }}</button>
                     @if($article->pdf_file)
                         <a href="{{ route('articles.pdf.view', $article->slug) }}" target="_blank"
                             class="ml-2 bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg inline-block">🔍
-                            Onlayn ko'rish</a>
+                            {{ __('site.article.view_online') }}</a>
                         <a href="{{ route('articles.pdf', $article->slug) }}"
                             class="ml-2 bg-gold hover:bg-gold-light text-white text-sm font-medium px-4 py-2 rounded-lg inline-block">📥
-                            PDF yuklab olish</a>
+                            {{ __('site.article.download_pdf') }}</a>
                     @endif
                     <div x-show="showCite" x-transition class="mt-4 space-y-3">
                         <div>
@@ -143,12 +141,12 @@
             <div class="space-y-6">
                 {{-- Author Cards --}}
                 <div class="bg-white rounded-xl border p-5">
-                    <h3 class="font-semibold text-navy-dark mb-3">Mualliflar</h3>
+                    <h3 class="font-semibold text-navy-dark mb-3">{{ __('site.article.authors_heading') }}</h3>
                     @foreach($article->authors as $author)
                         <div class="py-3 {{ !$loop->last ? 'border-b' : '' }}">
                             <a href="{{ route('authors.show', $author->id) }}"
                                 class="font-medium text-sm text-navy hover:text-gold">{{ $author->full_name }}</a>
-                            @if($author->pivot->is_corresponding)<span class="text-xs text-gold">(asosiy)</span>@endif
+                            @if($author->pivot->is_corresponding)<span class="text-xs text-gold">({{ __('site.article.corresponding') }})</span>@endif
                             <p class="text-xs text-gray-500 mt-0.5">{{ $author->pivot->organization ?: $author->organization }}
                             </p>
                             @if($author->orcid)
@@ -160,7 +158,7 @@
                 {{-- Related --}}
                 @if($relatedArticles->count())
                     <div class="bg-white rounded-xl border p-5">
-                        <h3 class="font-semibold text-navy-dark mb-3">O'xshash maqolalar</h3>
+                        <h3 class="font-semibold text-navy-dark mb-3">{{ __('site.article.related_heading') }}</h3>
                         @foreach($relatedArticles as $rel)
                             <div class="py-2 {{ !$loop->last ? 'border-b' : '' }}">
                                 <a href="{{ route('articles.show', $rel->slug) }}"
