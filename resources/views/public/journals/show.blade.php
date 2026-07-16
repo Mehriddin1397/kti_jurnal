@@ -27,78 +27,83 @@
             </div>
 
             <div x-show="tab==='about'" class="bg-white rounded-xl border p-6"
-                x-data="{
-                    aboutOpen: false,
+                x-data='{
                     selected: @json($aboutPages->first()?->slug),
                     pages: @json($aboutPagesData)
-                }">
+                }'>
                 @if($aboutPages->isNotEmpty())
-                <div class="relative mb-6">
-                    <label class="block text-sm font-medium text-gray-600 mb-2">{{ __('site.journal.select_section') }}</label>
-                    <button type="button" @click="aboutOpen = !aboutOpen"
-                        class="w-full flex items-center justify-between gap-3 px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 hover:bg-white transition-colors text-left">
-                        <span>
-                            <span class="block font-semibold text-navy-dark"
-                                x-text="pages.find(p => p.slug === selected)?.title_uz"></span>
-                            <span class="block text-xs text-gray-500 mt-0.5 line-clamp-2"
-                                x-text="pages.find(p => p.slug === selected)?.description_uz"></span>
-                        </span>
-                        <span class="text-gray-400 flex-shrink-0" x-text="aboutOpen ? '▴' : '▾'"></span>
-                    </button>
-                    <div x-show="aboutOpen" @click.outside="aboutOpen = false" x-cloak
-                        class="absolute z-20 left-0 right-0 mt-2 max-h-80 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+                <div class="flex flex-col md:flex-row gap-6 items-start">
+                    {{-- Plain vertical list, like the About menu on in-academy.uz --}}
+                    <nav class="w-full md:w-64 flex-shrink-0 border border-gray-200 rounded-lg divide-y divide-gray-100 overflow-hidden">
                         <template x-for="page in pages" :key="page.slug">
-                            <button type="button" @click="selected = page.slug; aboutOpen = false"
-                                :class="selected === page.slug ? 'bg-gold-pale border-l-4 border-gold' : 'hover:bg-gray-50 border-l-4 border-transparent'"
-                                class="w-full text-left px-4 py-3 border-b border-gray-100 last:border-b-0 transition-colors">
-                                <span class="block text-sm font-medium text-navy-dark" x-text="page.title_uz"></span>
-                                <span class="block text-xs text-gray-500 mt-1" x-text="page.description_uz"></span>
-                            </button>
+                            <button type="button" @click="selected = page.slug"
+                                :class="selected === page.slug ? 'bg-gold-pale text-navy font-semibold' : 'text-gray-700 hover:bg-gray-50'"
+                                class="w-full text-left px-4 py-2.5 text-sm transition-colors" x-text="page.title_uz"></button>
+                        </template>
+                    </nav>
+
+                    <div class="flex-1 min-w-0 w-full">
+                        <template x-for="page in pages" :key="'content-' + page.slug">
+                            <div x-show="selected === page.slug" class="space-y-6">
+                                <div class="border border-gray-100 rounded-lg p-4">
+                                    <span class="inline-block text-xs font-semibold uppercase tracking-wide text-navy bg-gold-pale px-2 py-0.5 rounded mb-2">{{ __('site.journal.lang_uz') }}</span>
+                                    <h3 class="font-semibold text-navy-dark text-lg" x-text="page.title_uz"></h3>
+                                    <p class="text-sm text-gray-600 mt-2 leading-relaxed" x-text="page.description_uz"></p>
+                                    <div x-show="page.body_uz" class="text-sm text-gray-700 leading-relaxed mt-4 whitespace-pre-line" x-text="page.body_uz"></div>
+                                </div>
+                                <div x-show="page.title_en || page.description_en || page.body_en" class="border border-gray-100 rounded-lg p-4">
+                                    <span class="inline-block text-xs font-semibold uppercase tracking-wide text-navy bg-blue-50 px-2 py-0.5 rounded mb-2">{{ __('site.journal.lang_en') }}</span>
+                                    <h3 class="font-semibold text-navy-dark text-lg" x-text="page.title_en || page.title_uz"></h3>
+                                    <p class="text-sm text-gray-600 mt-2 leading-relaxed" x-text="page.description_en || page.description_uz"></p>
+                                    <div x-show="page.body_en" class="text-sm text-gray-700 leading-relaxed mt-4 whitespace-pre-line" x-text="page.body_en"></div>
+                                </div>
+                                <div x-show="page.title_ru || page.description_ru || page.body_ru" class="border border-gray-100 rounded-lg p-4">
+                                    <span class="inline-block text-xs font-semibold uppercase tracking-wide text-navy bg-red-50 px-2 py-0.5 rounded mb-2">{{ __('site.journal.lang_ru') }}</span>
+                                    <h3 class="font-semibold text-navy-dark text-lg" x-text="page.title_ru || page.title_uz"></h3>
+                                    <p class="text-sm text-gray-600 mt-2 leading-relaxed" x-text="page.description_ru || page.description_uz"></p>
+                                    <div x-show="page.body_ru" class="text-sm text-gray-700 leading-relaxed mt-4 whitespace-pre-line" x-text="page.body_ru"></div>
+                                </div>
+                            </div>
                         </template>
                     </div>
                 </div>
-
-                <template x-for="page in pages" :key="'content-' + page.slug">
-                    <div x-show="selected === page.slug" class="space-y-6">
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <span class="inline-block text-xs font-semibold uppercase tracking-wide text-navy bg-gold-pale px-2 py-0.5 rounded mb-2">{{ __('site.journal.lang_uz') }}</span>
-                            <h3 class="font-semibold text-navy-dark text-lg" x-text="page.title_uz"></h3>
-                            <p class="text-sm text-gray-600 mt-2 leading-relaxed" x-text="page.description_uz"></p>
-                            <div x-show="page.body_uz" class="text-sm text-gray-700 leading-relaxed mt-4 whitespace-pre-line" x-text="page.body_uz"></div>
-                        </div>
-                        <div x-show="page.title_en || page.description_en || page.body_en" class="border border-gray-100 rounded-lg p-4">
-                            <span class="inline-block text-xs font-semibold uppercase tracking-wide text-navy bg-blue-50 px-2 py-0.5 rounded mb-2">{{ __('site.journal.lang_en') }}</span>
-                            <h3 class="font-semibold text-navy-dark text-lg" x-text="page.title_en || page.title_uz"></h3>
-                            <p class="text-sm text-gray-600 mt-2 leading-relaxed" x-text="page.description_en || page.description_uz"></p>
-                            <div x-show="page.body_en" class="text-sm text-gray-700 leading-relaxed mt-4 whitespace-pre-line" x-text="page.body_en"></div>
-                        </div>
-                        <div x-show="page.title_ru || page.description_ru || page.body_ru" class="border border-gray-100 rounded-lg p-4">
-                            <span class="inline-block text-xs font-semibold uppercase tracking-wide text-navy bg-red-50 px-2 py-0.5 rounded mb-2">{{ __('site.journal.lang_ru') }}</span>
-                            <h3 class="font-semibold text-navy-dark text-lg" x-text="page.title_ru || page.title_uz"></h3>
-                            <p class="text-sm text-gray-600 mt-2 leading-relaxed" x-text="page.description_ru || page.description_uz"></p>
-                            <div x-show="page.body_ru" class="text-sm text-gray-700 leading-relaxed mt-4 whitespace-pre-line" x-text="page.body_ru"></div>
-                        </div>
-                    </div>
-                </template>
                 @else
                 <p class="text-sm text-gray-500">{{ __('site.journal.no_about_pages') }}</p>
                 @endif
             </div>
 
-            <div x-show="tab==='issues'" class="bg-white rounded-xl border p-6">
+            <div x-show="tab==='issues'" class="bg-white rounded-xl border p-6"
+                x-data='{
+                    selectedIssue: @json($defaultIssueKey),
+                    issues: @json($issues)
+                }'>
                 <h3 class="font-semibold text-navy-dark mb-4">{{ __('site.journal.issues_heading') }}</h3>
-                @foreach($volumes as $vol)
-                <div class="mb-4">
-                    <h4 class="text-sm font-semibold text-navy bg-gray-50 px-3 py-2 rounded">{{ __('site.journal.volume') }} {{ $vol->volume }}, {{ __('site.journal.issue') }} {{ $vol->issue }}</h4>
+                @if($issues->isNotEmpty())
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                    <label class="text-sm font-medium text-gray-600">{{ __('site.journal.select_issue') }}</label>
+                    <select x-model="selectedIssue"
+                        class="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:ring-2 focus:ring-navy outline-none">
+                        <template x-for="iss in issues" :key="iss.key">
+                            <option :value="iss.key" x-text="'{{ __('site.journal.volume') }} ' + iss.volume + ', {{ __('site.journal.issue') }} ' + iss.issue"></option>
+                        </template>
+                    </select>
                 </div>
-                @endforeach
-                @foreach($articles as $article)
-                <div class="py-3 border-b border-gray-100">
-                    <a href="{{ route('articles.show', $article->slug) }}" class="text-navy hover:text-gold font-medium text-sm">{{ $article->title }}</a>
-                    <p class="text-xs text-gray-500 mt-1">{{ $article->authors_string }} · {{ $article->published_at?->format('Y') }}</p>
-                </div>
-                @endforeach
-                <div class="mt-4">{{ $articles->links() }}</div>
+
+                <template x-for="iss in issues" :key="'issue-' + iss.key">
+                    <div x-show="selectedIssue === iss.key" class="divide-y divide-gray-100">
+                        <template x-for="article in iss.articles" :key="article.slug">
+                            <div class="py-3">
+                                <a :href="'{{ url('/articles') }}/' + article.slug"
+                                    class="text-navy hover:text-gold font-medium text-sm" x-text="article.title"></a>
+                                <p class="text-xs text-gray-500 mt-1"
+                                    x-text="article.authors + (article.year ? ' · ' + article.year : '')"></p>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                @else
+                <p class="text-sm text-gray-500">{{ __('site.journal.no_issues') }}</p>
+                @endif
             </div>
 
             <div x-show="tab==='editors'" class="bg-white rounded-xl border p-6">

@@ -131,6 +131,8 @@ return [
         'lang_en' => 'English',
         'lang_ru' => 'Russian',
         'issues_heading' => 'Articles by issue',
+        'select_issue' => 'Select an issue',
+        'no_issues' => 'No published issues yet.',
         'volume' => 'Volume',
         'issue' => 'Issue',
         'editors_heading' => 'Editorial Board',

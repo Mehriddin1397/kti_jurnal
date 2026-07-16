@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AboutPage extends Model
 {
@@ -13,6 +14,11 @@ class AboutPage extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function journal(): BelongsTo
+    {
+        return $this->belongsTo(Journal::class);
+    }
 
     public function getTitleAttribute(): string
     {
@@ -37,5 +43,10 @@ class AboutPage extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function scopeForJournal($query, $journalId)
+    {
+        return $query->where('journal_id', $journalId);
     }
 }

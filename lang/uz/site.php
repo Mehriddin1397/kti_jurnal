@@ -131,6 +131,8 @@ return [
         'lang_en' => 'English',
         'lang_ru' => 'Русский',
         'issues_heading' => 'Sonlar bo\'yicha maqolalar',
+        'select_issue' => 'Sonni tanlang',
+        'no_issues' => "Hozircha chop etilgan sonlar yo'q.",
         'volume' => 'Tom',
         'issue' => 'Son',
         'editors_heading' => "Muharrirlar hay'ati",

@@ -4,14 +4,30 @@
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-xl font-bold text-gray-800">Haqida sahifalari</h1>
-            <p class="text-sm text-gray-500 mt-1">Jurnal sahifasidagi dropdown bo'limlari</p>
+            <p class="text-sm text-gray-500 mt-1">Har bir jurnal uchun alohida "Haqida" dropdown bo'limlari</p>
         </div>
+        <a href="{{ route('admin.about-pages.create') }}"
+            class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg">+ Yangi sahifa</a>
     </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-4 mb-4">
+        <form method="GET" class="flex flex-wrap gap-3">
+            <select name="journal_id" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <option value="">Barcha jurnallar</option>
+                @foreach($journals as $j)
+                    <option value="{{ $j->id }}" {{ request('journal_id') == $j->id ? 'selected' : '' }}>{{ $j->name_uz }}</option>
+                @endforeach
+            </select>
+            <button class="bg-navy text-white text-sm px-4 py-2 rounded-lg">Filtrlash</button>
+        </form>
+    </div>
+
     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 border-b">
                 <tr class="text-left text-gray-600">
                     <th class="px-4 py-3 font-medium">#</th>
+                    <th class="px-4 py-3 font-medium">Jurnal</th>
                     <th class="px-4 py-3 font-medium">Sarlavha (UZ)</th>
                     <th class="px-4 py-3 font-medium">Slug</th>
                     <th class="px-4 py-3 font-medium">Holat</th>
@@ -22,6 +38,7 @@
                 @forelse($pages as $page)
                     <tr class="border-b border-gray-100 hover:bg-gray-50">
                         <td class="px-4 py-3 text-gray-400">{{ $page->sort_order }}</td>
+                        <td class="px-4 py-3 text-gray-500 text-xs">{{ $page->journal?->name_uz ?? '—' }}</td>
                         <td class="px-4 py-3">
                             <p class="font-medium">{{ $page->title_uz }}</p>
                             @if($page->description_uz)
@@ -35,13 +52,20 @@
                             </span>
                         </td>
                         <td class="px-4 py-3">
-                            <a href="{{ route('admin.about-pages.edit', $page) }}"
-                                class="text-navy hover:text-gold text-xs font-medium">Tahrirlash</a>
+                            <div class="flex items-center gap-2">
+                                <a href="{{ route('admin.about-pages.edit', $page) }}"
+                                    class="text-navy hover:text-gold text-xs font-medium">Tahrirlash</a>
+                                <form method="POST" action="{{ route('admin.about-pages.destroy', $page) }}"
+                                    onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?')">
+                                    @csrf @method('DELETE')
+                                    <button class="text-red-500 hover:text-red-700 text-xs">O'chirish</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-8 text-center text-gray-400">
+                        <td colspan="6" class="px-4 py-8 text-center text-gray-400">
                             Sahifalar topilmadi. <code>php artisan db:seed --class=AboutPageSeeder</code> ni ishga tushiring.
                         </td>
                     </tr>

@@ -62,7 +62,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('authors', App\Http\Controllers\Admin\AuthorController::class);
     Route::resource('conferences', App\Http\Controllers\Admin\ConferenceController::class);
     Route::resource('news', App\Http\Controllers\Admin\NewsController::class);
-    Route::resource('about-pages', App\Http\Controllers\Admin\AboutPageController::class)->only(['index', 'edit', 'update']);
+    Route::resource('about-pages', App\Http\Controllers\Admin\AboutPageController::class)->except(['show']);
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
 
     // Submissions

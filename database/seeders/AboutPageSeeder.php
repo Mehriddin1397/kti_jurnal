@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\AboutPage;
+use App\Models\Journal;
 use Illuminate\Database\Seeder;
 
 class AboutPageSeeder extends Seeder
@@ -174,14 +175,17 @@ class AboutPageSeeder extends Seeder
             ],
         ];
 
-        foreach ($pages as $index => $page) {
-            AboutPage::updateOrCreate(
-                ['slug' => $page['slug']],
-                array_merge($page, [
-                    'sort_order' => $index + 1,
-                    'is_active' => true,
-                ])
-            );
+        foreach (Journal::all() as $journal) {
+            foreach ($pages as $index => $page) {
+                AboutPage::updateOrCreate(
+                    ['journal_id' => $journal->id, 'slug' => $page['slug']],
+                    array_merge($page, [
+                        'journal_id' => $journal->id,
+                        'sort_order' => $index + 1,
+                        'is_active' => true,
+                    ])
+                );
+            }
         }
     }
 }

@@ -21,21 +21,36 @@ class JournalController extends Controller
     {
         $journal = Journal::where('slug', $slug)->firstOrFail();
 
-        $articles = $journal->articles()
+        $publishedArticles = $journal->articles()
             ->where('status', 'published')
             ->with('authors')
             ->latest('published_at')
-            ->paginate(20);
-
-        $volumes = $journal->articles()
-            ->where('status', 'published')
-            ->select('volume', 'issue')
-            ->distinct()
-            ->orderByDesc('volume')
-            ->orderByDesc('issue')
             ->get();
 
-        $aboutPages = AboutPage::active()->ordered()->get();
+        $issues = $publishedArticles
+            ->groupBy(fn ($article) => $article->volume . '-' . $article->issue)
+            ->map(function ($group, $key) {
+                $first = $group->first();
+
+                return [
+                    'key' => $key,
+                    'volume' => $first->volume,
+                    'issue' => $first->issue,
+                    'latest_published_at' => optional($group->max('published_at'))->format('Y-m-d'),
+                    'articles' => $group->map(fn ($article) => [
+                        'slug' => $article->slug,
+                        'title' => $article->title,
+                        'authors' => $article->authors_string,
+                        'year' => $article->published_at?->format('Y'),
+                    ])->values(),
+                ];
+            })
+            ->sortByDesc('latest_published_at')
+            ->values();
+
+        $defaultIssueKey = $issues->first()['key'] ?? null;
+
+        $aboutPages = AboutPage::forJournal($journal->id)->active()->ordered()->get();
         $aboutPagesData = $aboutPages->map(fn ($page) => [
             'slug' => $page->slug,
             'title_uz' => $page->title_uz,
@@ -49,6 +64,6 @@ class JournalController extends Controller
             'body_ru' => $page->body_ru,
         ])->values();
 
-        return view('public.journals.show', compact('journal', 'articles', 'volumes', 'aboutPages', 'aboutPagesData'));
+        return view('public.journals.show', compact('journal', 'issues', 'defaultIssueKey', 'aboutPages', 'aboutPagesData'));
     }
 }

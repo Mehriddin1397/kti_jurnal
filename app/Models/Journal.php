@@ -33,6 +33,11 @@ class Journal extends Model
         return $this->hasMany(Submission::class);
     }
 
+    public function aboutPages(): HasMany
+    {
+        return $this->hasMany(AboutPage::class);
+    }
+
     public function getNameAttribute(): string
     {
         return $this->getTranslated('name');
